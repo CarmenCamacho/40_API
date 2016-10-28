@@ -1,0 +1,57 @@
+.rosa{
+	background-color: pink;
+	padding: 2%;
+
+}
+
+.tarjeta{
+	background-color: lightblue;
+	margin-right: 2%;
+	padding: 0.5%;
+	box-sizing: content-box;
+	max-width: 200px;
+	float: left;
+
+}
+
+h3{
+	background-color: lightblue;
+	margin: 0px;
+	padding: 2%;
+	width: 200px;
+	font-size: 1.3em;
+}
+
+.inline{
+	display: inline;
+
+}
+
+.block{
+	display: block;
+}
+
+.tarjeta{
+	border-radius: 4px;
+}
+
+p{
+	border-radius: 4px;
+	margin-top: .7em;
+	margin-left: .5em;
+	margin-right: .5em;
+	padding: 2%;
+	background-color: white;
+	line-height: 95%;	
+	text-overflow: ellipsis;
+	clear: both;
+}
+
+textarea{
+	width: 180px;
+	margin-left: 3%;
+}
+
+.margin-button{
+	margin-left: 2.8%;
+}
