@@ -8,30 +8,76 @@ var div1 = document.getElementById("div1")
 div1.appendChild(addButton);
 addButton.focus();
 
+document.addEventListener("drag", function(ev) {
+    ev.target.style.backgroundColor = "yellow";
+});
 
-function allowDrop(ev) {
-      if (ev.target.className === "pull-left inline tarjeta"){// Permitir el drop solo en el div adecuado
-        event.preventDefault();
-      }
-      else{
-      	return;
-      }
-}
-function dragStart(ev) {
-	console.log("aca");
+
+
+document.addEventListener("dragstart", function(ev) {
+	ev.dataTransfer.setData("Text", ev.target.id);	
+    ev.target.parentNode.style.opacity = "0.4"; // Change the opacity of the draggable element parent
+    console.log("aca");
 	console.log(ev.target.id);
-    ev.dataTransfer.setData("Text", ev.target.id);
     ev.dropEffect = "move";
-    
-}
+});
+
+document.addEventListener("dragend", function(ev) {
+    ev.target.parentNode.style.opacity = "1"; // Change the opacity of the draggable element parent
+    document.getElementById("arrastra").style.backgroundColor = "white";
+});
+
+document.addEventListener("dragenter", function(ev) {
+    if ( ev.target.className == "pull-left inline tarjeta") {
+    	ev.target.style.backgroundColor = "aqua"; 
+
+    }
+    else{
+      	return;
+    }
+});
+
+document.addEventListener("dragover", function(ev) {
+	if ( ev.target.className == "pull-left inline tarjeta") {
+    	ev.preventDefault();   	
+    }
+    else{
+      	return;
+    }
+
+});
+
+document.addEventListener("dragleave", function(ev) {
+    if ( ev.target.className == "pull-left inline tarjeta" ) {
+    	ev.target.removeAttribute("style");
+
+    }
+});
+
+document.addEventListener("drop", function(ev) {
+    ev.preventDefault();
+    if ( ev.target.className == "pull-left inline tarjeta" ) {
+    	var tarjeta = document.getElementById("tarjeta");
+    	tarjeta.removeAttribute("style");
+    	document.getElementById("arrastra").style.backgroundColor = "";
+    	document.getElementById("arrastra").style.opacity = "1";
+        var data = ev.dataTransfer.getData("Text");
+    	console.log(data);
+    	var ultimoChild = ev.currentTarget.childNodes.length - 1;
+    	ev.target.insertBefore(document.getElementById(data), ev.target.childNodes[ultimoChild]);
+    	document.getElementById("arrastra").style.backgroundColor = "white";
+    }
+});
+
 
 function drop(ev) { 
 	ev.preventDefault();
 	console.log("acuya")
     var data = ev.dataTransfer.getData("Text");
     console.log(data);
-    var ultimoChild = ev.target.childNodes.length - 1;
+    var ultimoChild = ev.currentTarget.childNodes.length - 1;
     ev.target.insertBefore(document.getElementById(data), ev.target.childNodes[ultimoChild]);
+    document.getElementById("arrastra").style.backgroundColor = "white";
       /*event.target.appendChild(document.getElementById(data));*/  
 }
 			
@@ -69,11 +115,10 @@ function guarda(){
 		boton2.setAttribute("onclick", "contenidoTarjeta(this)")
 		boton2.innerHTML = "Añadir tarjeta";
 		var tarjeta = document.createElement("div");
-		/*tarjeta.setAttribute("draggable", "true");
-		tarjeta.setAttribute("ondragstart", "arrastraTarjeta(event)")*/
 		tarjeta.setAttribute("ondrop", "drop(event)");
-		tarjeta.setAttribute("ondragover", "allowDrop(event)");
+		//tarjeta.setAttribute("ondragover", "allowDrop(event)");
 		tarjeta.setAttribute("class" , "pull-left inline tarjeta");
+		tarjeta.setAttribute("id" , "tarjeta");
 		tarjeta.appendChild(titulo);
 		tarjeta.appendChild(boton2);
 		var final = div1.childNodes.length;
@@ -97,7 +142,6 @@ function contenidoTarjeta(esta){
 		fillmeup.setAttribute("class","block");	
 	var parrafo = document.createElement("p");
 	parrafo.setAttribute("draggable" , "true"); 
-	parrafo.setAttribute("ondragstart", "dragStart(event)");
 	parrafo.setAttribute("id", "arrastra")
 	var ultimoChild = papa.childNodes.length - 1;
 	papa.replaceChild(guardaTarjeta, esta);
